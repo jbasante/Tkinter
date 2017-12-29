@@ -12,22 +12,13 @@ class MainMenu(Tk):
 
         self.frames = {}
         self.frameNamesNValues = {Amount: 1, Interest: 2}
-        #create a frame for the description of gui and buttons to press
 
+        #create a frame for the description of gui and buttons to press
         constantFrame = Frame(self)
         constantFrame.grid(row=0, column=0, sticky="w")
 
         headerLabel = Label(constantFrame, text="Compound Interest Calculator", anchor="w")
         headerLabel.grid(row=0, column=0)
-
-        #store the frame for each computation (created as a class) to be made in a dictionary
-        frame = Amount(self, container, self.frameNamesNValues[Amount])
-        self.frames[Amount] = frame
-        frame.grid(row=3, column=0, sticky="nsew")
-
-        frame = Interest(self, container, self.frameNamesNValues[Interest])
-        self.frames[Interest] = frame
-        frame.grid(row=3, column=0, sticky="nsew")
 
         interestButton = Button(constantFrame, text="Interest", command=lambda: self.show_frame(Interest))
         interestButton.grid(row=1, column=0)
@@ -38,8 +29,18 @@ class MainMenu(Tk):
         exitButton = Button(constantFrame, text="Exit", command=quit)
         exitButton.grid(row=1, column=7, padx=50, pady=3)
 
+        # store the frame for each computation (created as a class) to be made in a dictionary
+        frame = Amount(self, container, self.frameNamesNValues[Amount])
+        self.frames[Amount] = frame
+        frame.grid(row=3, column=0, sticky="nsew")
+
+        frame = Interest(self, container, self.frameNamesNValues[Interest])
+        self.frames[Interest] = frame
+        frame.grid(row=3, column=0, sticky="nsew")
+
         self.show_frame(Interest)
 
+    #function to show a particular frame
     def show_frame(self, container):
         frame = self.frames[container]
         frame.tkraise()
@@ -49,7 +50,7 @@ class Amount(Frame):
 
     def __init__(self, master, controller, controlValue):
         Frame.__init__(self, master)
-        self.controlValue = controlValue
+        self.controlValue = controlValue #will be used to check if amount or interest is to be calculated
         self.scaleValue = DoubleVar()
         self.principalValue = DoubleVar()
         self.nValue = StringVar()
@@ -114,6 +115,7 @@ class Amount(Frame):
         self.totalAmount.set(finalValue)
 
 
+#Create the class (frame) for calculating the interest
 class Interest(Amount):
     pass
 
@@ -121,5 +123,5 @@ class Interest(Amount):
 app = MainMenu()
 app.geometry("330x320+0+0")
 app.title("Compund Interest Calculator")
-app.resizable(0,0)
+app.resizable(0,0) #will cause window not to be expandable
 app.mainloop()
